@@ -52,7 +52,7 @@ export default function SessionEditor() {
         if (!token) throw new Error("No authentication token found");
 
         const response = await fetch(
-          "http://localhost:3000/api/my-sessions/save-draft",
+          "https://react-assignment-612x.onrender.com/api/my-sessions/save-draft",
           {
             method: "POST",
             headers: {
@@ -101,7 +101,7 @@ export default function SessionEditor() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:3000/api/my-sessions/${id}`,
+        `https://react-assignment-612x.onrender.com/api/my-sessions/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -129,7 +129,7 @@ export default function SessionEditor() {
       if (!token) throw new Error("No authentication token found");
 
       const response = await fetch(
-        "http://localhost:3000/api/my-sessions/save-draft",
+        "https://react-assignment-612x.onrender.com/api/my-sessions/save-draft",
         {
           method: "POST",
           headers: {

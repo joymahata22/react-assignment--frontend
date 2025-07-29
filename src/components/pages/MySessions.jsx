@@ -19,7 +19,7 @@ export default function MySessions() {
         throw new Error("No authentication token found");
       }
 
-      const response = await fetch("http://localhost:3000/api/my-sessions", {
+      const response = await fetch("https://react-assignment-612x.onrender.com/api/my-sessions", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -40,7 +40,7 @@ export default function MySessions() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        "http://localhost:3000/api/my-sessions/publish",
+        "https://react-assignment-612x.onrender.com/api/my-sessions/publish",
         {
           method: "POST",
           headers: {
@@ -68,7 +68,7 @@ export default function MySessions() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:3000/api/my-sessions/${sessionId}`,
+        `https://react-assignment-612x.onrender.com/api/my-sessions/${sessionId}`,
         {
           method: "DELETE",
           headers: {

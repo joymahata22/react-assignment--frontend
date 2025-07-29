@@ -12,7 +12,7 @@ export default function Dashboard() {
   const handleLogout = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:3000/api/auth/logout', {
+      const response = await fetch('https://react-assignment-612x.onrender.com/api/auth/logout', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -39,7 +39,7 @@ export default function Dashboard() {
 
   const fetchPublicSessions = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/sessions");
+      const response = await fetch("https://react-assignment-612x.onrender.com/api/sessions");
       if (!response.ok) throw new Error("Failed to fetch sessions");
       const data = await response.json();
       setSessions(data.data);

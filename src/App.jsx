@@ -1,29 +1,13 @@
-import { useState, useEffect } from "react"
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import { Routes, Route, Navigate } from "react-router-dom"
 import Login from "./components/auth/Login"
 import Register from "./components/auth/Register"
 import Dashboard from "./components/pages/Dashboard"
 import MySessions from "./components/pages/MySessions"
 import SessionEditor from "./components/pages/SessionEditor"
+import { useAuth } from "./contexts/AuthContext"
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
-
-  useEffect(() => {
-    const checkAuth = () => {
-      setIsAuthenticated(!!localStorage.getItem('token'));
-    };
-
-    // Check authentication status when component mounts
-    checkAuth();
-
-    // Add event listener for storage changes
-    window.addEventListener('storage', checkAuth);
-
-    return () => {
-      window.removeEventListener('storage', checkAuth);
-    };
-  }, []);
+  const { isAuthenticated } = useAuth();
 
   return (
     <BrowserRouter>

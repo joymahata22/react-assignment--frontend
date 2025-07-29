@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Link } from 'react-router-dom';
 import { Button } from '../ui/button';
+import { useAuth } from '../../contexts/AuthContext';
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -13,6 +14,7 @@ const loginSchema = z.object({
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
+  const { login } = useAuth();
   
   const {
     register,
@@ -51,12 +53,9 @@ export default function Login() {
         throw new Error(result.message || 'Login failed');
       }
 
-      // Store the token in localStorage
-      localStorage.setItem('token', result.token);
-      console.log('Login successful, token stored'); // Debug log
-      
-      // Redirect to home page or dashboard after successful login
-      window.location.href = '/dashboard';  // You'll need to add this route to your App.jsx
+      // Use the login function from AuthContext
+      login(result.token);
+      console.log('Login successful');
     } catch (error) {
       console.error('Login error:', error);
       alert(error.message || 'Error logging in. Please try again.');

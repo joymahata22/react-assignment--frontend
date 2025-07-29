@@ -1,33 +1,18 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "../ui/button";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function Dashboard() {
-  const navigate = useNavigate();
+  const { logout } = useAuth();
   const [sessions, setSessions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const handleLogout = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('https://react-assignment-612x.onrender.com/api/auth/logout', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-
-      if (response.ok) {
-        // Clear all data from localStorage
-        localStorage.clear();
-        // Redirect to login page and refresh
-        navigate('/login');
-        window.location.reload(); // This will refresh the page
-      } else {
-        throw new Error('Logout failed');
-      }
+      await logout();
     } catch (err) {
       setError(err.message);
     }

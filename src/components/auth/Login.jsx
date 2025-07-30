@@ -52,7 +52,8 @@ export default function Login() {
         throw new Error(result.message || 'Login failed');
       }
 
-      login(result.token);
+      await login(result.token);
+      window.location.href = '/dashboard';
       console.log('Login successful');
     } catch (error) {
       console.error('Login error:', error);

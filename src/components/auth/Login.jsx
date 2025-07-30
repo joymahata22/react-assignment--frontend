@@ -52,8 +52,6 @@ export default function Login() {
         throw new Error(result.message || 'Login failed');
       }
 
-      redirect('/dashboard');
-
       login(result.token);
       console.log('Login successful');
     } catch (error) {

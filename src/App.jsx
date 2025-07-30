@@ -14,27 +14,26 @@ function App() {
     return <Navigate to="/dashboard" replace />;
   }
 
+  // Require authentication for protected routes
   if (!isAuthenticated && !['/login', '/register', '/'].includes(location.pathname)) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   return (
-    <BrowserRouter basename="/">
-      <Routes>
-        <Route 
-          path="/" 
-          element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} replace />} 
-        />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        
-        {/* Protected Routes */}
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/my-sessions" element={<MySessions />} />
-        <Route path="/session/new" element={<SessionEditor />} />
-        <Route path="/session/edit/:id" element={<SessionEditor />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route 
+        path="/" 
+        element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} replace />} 
+      />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      
+      {/* Protected Routes */}
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/my-sessions" element={<MySessions />} />
+      <Route path="/session/new" element={<SessionEditor />} />
+      <Route path="/session/edit/:id" element={<SessionEditor />} />
+    </Routes>
   );
 }
 

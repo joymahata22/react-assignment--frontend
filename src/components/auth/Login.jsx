@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Link } from 'react-router-dom';
+import { Link, redirect } from 'react-router-dom';
 import { Button } from '../ui/button';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -51,6 +51,8 @@ export default function Login() {
       if (!response.ok) {
         throw new Error(result.message || 'Login failed');
       }
+
+      redirect('/dashboard');
 
       login(result.token);
       console.log('Login successful');

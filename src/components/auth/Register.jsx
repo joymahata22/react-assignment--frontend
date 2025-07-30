@@ -48,10 +48,8 @@ export default function Register() {
         throw new Error(result.message || 'Registration failed');
       }
 
-      // Store the token in localStorage
       localStorage.setItem('token', result.token);
       
-      // Redirect to login page after successful registration
       window.location.href = '/login';
     } catch (error) {
       console.error(error);

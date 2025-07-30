@@ -27,7 +27,6 @@ export default function Login() {
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {
-      // Log the full data being sent (in production, never log passwords)
       console.log('Form data received:', { email: data.email, hasPassword: !!data.password });
       
       const requestBody = {
@@ -35,7 +34,7 @@ export default function Login() {
         password: data.password
       };
       
-      console.log('Request body:', requestBody); // For debugging
+      console.log('Request body:', requestBody); 
       
       const response = await fetch('https://react-assignment-612x.onrender.com/api/auth/login', {
         method: 'POST',
@@ -47,13 +46,12 @@ export default function Login() {
       });
 
       const result = await response.json();
-      console.log('Login response:', { status: response.status, data: result }); // Debug log
+      console.log('Login response:', { status: response.status, data: result }); 
       
       if (!response.ok) {
         throw new Error(result.message || 'Login failed');
       }
 
-      // Use the login function from AuthContext
       login(result.token);
       console.log('Login successful');
     } catch (error) {

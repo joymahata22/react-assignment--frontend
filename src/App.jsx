@@ -1,24 +1,45 @@
-import { Routes, Route, Navigate, useLocation } from "react-router-dom"
+import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom"
 import Login from "./components/auth/Login"
 import Register from "./components/auth/Register"
 import Dashboard from "./components/pages/Dashboard"
 import MySessions from "./components/pages/MySessions"
 import SessionEditor from "./components/pages/SessionEditor"
 import { useAuth } from "./contexts/AuthContext"
+import { useEffect } from "react"
 
 function ProtectedRoute({ children }) {
   const { isAuthenticated, isLoading } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      navigate('/login', { replace: true, state: { from: location } });
+    }
+  }, [isAuthenticated, isLoading, navigate, location]);
 
   if (isLoading) {
     return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
   }
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+  return isAuthenticated ? children : null;
+}
+
+function AuthRoute({ children }) {
+  const { isAuthenticated, isLoading } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [isAuthenticated, isLoading, navigate]);
+
+  if (isLoading) {
+    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
   }
 
-  return children;
+  return !isAuthenticated ? children : null;
 }
 
 function App() {
@@ -38,17 +59,17 @@ function App() {
       <Route
         path="/login"
         element={
-          isAuthenticated ? 
-            <Navigate to="/dashboard" replace /> : 
+          <AuthRoute>
             <Login />
+          </AuthRoute>
         }
       />
       <Route
         path="/register"
         element={
-          isAuthenticated ? 
-            <Navigate to="/dashboard" replace /> : 
+          <AuthRoute>
             <Register />
+          </AuthRoute>
         }
       />
       

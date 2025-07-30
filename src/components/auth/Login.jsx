@@ -27,14 +27,10 @@ export default function Login() {
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {
-      console.log('Form data received:', { email: data.email, hasPassword: !!data.password });
-      
       const requestBody = {
         email: data.email,
         password: data.password
       };
-      
-      console.log('Request body:', requestBody); 
       
       const response = await fetch('https://react-assignment-612x.onrender.com/api/auth/login', {
         method: 'POST',
@@ -42,18 +38,23 @@ export default function Login() {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
-        body: JSON.stringify(requestBody)
+        body: JSON.stringify(requestBody),
+        credentials: 'include'
       });
 
       const result = await response.json();
-      console.log('Login response:', { status: response.status, data: result }); 
       
       if (!response.ok) {
         throw new Error(result.message || 'Login failed');
       }
 
       await login(result.token);
-      window.location.href = '/dashboard';
+      
+      // Use replace: true to prevent back navigation to login
+      setTimeout(() => {
+        window.location.replace('/dashboard');
+      }, 100);
+      
       console.log('Login successful');
     } catch (error) {
       console.error('Login error:', error);

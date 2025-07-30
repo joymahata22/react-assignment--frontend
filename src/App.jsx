@@ -6,18 +6,20 @@ import MySessions from "./components/pages/MySessions"
 import SessionEditor from "./components/pages/SessionEditor"
 import { useAuth } from "./contexts/AuthContext"
 
-function App() {
+function ProtectedRoute({ children }) {
   const { isAuthenticated } = useAuth();
   const location = useLocation();
 
-  if (isAuthenticated && ['/login', '/register'].includes(location.pathname)) {
-    return <Navigate to="/dashboard" replace />;
-  }
-
-  // Require authentication for protected routes
-  if (!isAuthenticated && !['/login', '/register', '/'].includes(location.pathname)) {
+  if (!isAuthenticated) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
+
+  return children;
+}
+
+function App() {
+  const { isAuthenticated } = useAuth();
+  const location = useLocation();
 
   return (
     <Routes>
@@ -25,14 +27,57 @@ function App() {
         path="/" 
         element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} replace />} 
       />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route
+        path="/login"
+        element={
+          isAuthenticated ? 
+            <Navigate to="/dashboard" replace /> : 
+            <Login />
+        }
+      />
+      <Route
+        path="/register"
+        element={
+          isAuthenticated ? 
+            <Navigate to="/dashboard" replace /> : 
+            <Register />
+        }
+      />
       
       {/* Protected Routes */}
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/my-sessions" element={<MySessions />} />
-      <Route path="/session/new" element={<SessionEditor />} />
-      <Route path="/session/edit/:id" element={<SessionEditor />} />
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/my-sessions"
+        element={
+          <ProtectedRoute>
+            <MySessions />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/session/new"
+        element={
+          <ProtectedRoute>
+            <SessionEditor />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/session/edit/:id"
+        element={
+          <ProtectedRoute>
+            <SessionEditor />
+          </ProtectedRoute>
+        }
+      />
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }
